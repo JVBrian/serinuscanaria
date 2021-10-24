@@ -1,3 +1,5 @@
+from PIL.Image import Image
+from wtforms.fields.core import Label
 from app.user.models import User
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
@@ -53,6 +55,7 @@ class SettingForm(FlaskForm):
         username = StringField('username')
         email = EmailField('E-mail', validators=[Email()])
         submit = SubmitField('Guardar')
+        
 
         def validate_email(self, email):
             if email.data != current_user.email:
@@ -66,3 +69,9 @@ class SettingForm(FlaskForm):
                 if user:
                     raise ValidationError('Este usuario ya está en uso')
 
+class PruebaForm(FlaskForm):
+    avatar = FileField('Avatar', validators=[FileAllowed(['jpg','png'])])
+    name = StringField('name')
+    username = StringField('username')
+    email = EmailField('E-mail', validators=[Email()])
+    submit = SubmitField('Guardar')

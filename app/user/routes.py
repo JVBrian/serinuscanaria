@@ -1,12 +1,15 @@
 import os
+
+from werkzeug.wrappers import request
 from app.extinsions import db
 from app.user import user
 from app.user.models import User
-from app.user.forms import SignupForm, LoginForm, ResetForm, PasswordResetForm, SettingForm
+from app.user.forms import SignupForm, LoginForm, ResetForm, PasswordResetForm, SettingForm, PruebaForm
 from app.helper.mail import send_email
 from app.helper.pics import save_picture
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, Request
 from flask_login import login_user, logout_user, current_user, login_required
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,7 +18,8 @@ def home(username):
     if not current_user.is_authenticated:
         return redirect(url_for('main.home'))
     user=User.query.filter_by(username = username).first_or_404()
-    return render_template('user.html', user=user)
+    
+    return render_template('user.html', user=user , foto=user.avatar)
 
 @user.route('un_follow/<username>')
 def un_follow(username):
@@ -165,5 +169,72 @@ def reset_request(token):
     else :
         flash("Error al restablecer la contraseña, inténtalo de nuevo", "danger")
         return redirect(url_for('user.reset'))
-    flash("Se ha enviado un correo de restablecimiento de contraseña, revise su bandeja de entrada", "info")
-    return redirect(url_for('user.login'))
+    
+
+@user.route('/admin')
+@login_required
+def admin():
+     if current_user.is_authenticated:
+        data = db.session.query(User).all()
+         
+
+        return render_template('admin.html', res =  data)
+
+@user.route('/superadmin')
+@login_required
+def superadmin():
+     if current_user.is_authenticated:
+        data = db.session.query(User).all()
+         
+
+        return render_template('superadmin.html', res =  data)
+
+#eliminar usuarios
+@user.route("/delete_users/<int:id>", methods=['GET', 'POST'])
+@login_required
+def delete_users(id):
+    com=User.query.get(id)
+    db.session.delete(com)
+    db.session.commit()
+    return redirect(url_for('user.admin'))
+
+@user.route("/profile/rol/<int:id>",methods=['GET','POST'])
+def rol_info_change(id):
+    info = User.query.get(id)
+    if info.rol == "usuario":
+        info.rol="admin"
+    else:
+        info.rol="usuario"
+    db.session.commit()
+    return redirect(url_for('user.superadmin'))
+
+
+
+
+#------------------------------------#
+@user.route("/profile/edit/<int:id>", methods=['GET', 'POST'])
+@login_required
+def edit_info_change(id):
+    if not current_user.is_confirmed:
+        flash("¿Este no es tu correo? Te invitamos a crea uno nuevo", "link")
+        return redirect(url_for('main.home'))
+    form = PruebaForm()
+    info = User.query.get(id) 
+    if form.validate_on_submit():
+        
+        info.name = form.name.data
+        info.username = form.username.data
+        
+        if not info.email == form.email.data :
+            info.email = form.email.data
+            info.is_confirmed = False
+        
+        flash(f'Tus datos han sido cambiados', 'success')
+        db.session.commit()
+        return redirect(url_for('user.admin', username=info.username))
+    
+    form.username.data = info.username
+    form.name.data = info.name
+    form.email.data = info.email
+    
+    return render_template('prueba.html', form=form, foto=info.avatar)

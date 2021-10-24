@@ -1,0 +1,111 @@
+{% from 'macros/form.html' import render_form %}
+{% extends 'main.html' %}
+
+{% block body %}
+
+<div class="box">
+	<div class="container is-max-widescreen">
+			<nav class="level">
+					<!-- Left side -->
+					<div class="level-left">
+							<div class="level-item mr-6">
+									<a href="{{ url_for('main.home') }}">
+											<h1 class="title">Serinus Canaria</h1>
+									</a>
+							</div>
+							<div class="level-item ml-6">
+									<form action="{{ url_for('main.home') }}">
+										<div class="field has-addons">
+											<input class="input" type="text" placeholder="Buscar usuario" name="search">
+											<input type="submit" class="button" value="Buscar">
+										</div>
+									</form>
+							</div>
+					</div>
+
+					<!-- Right side -->
+					<div class="navbar-item has-dropdown is-hoverable">
+							
+
+					   
+						<a href="{{ url_for('main.home') }}" class="navbar-item{% if request.endpoint.endswith('main.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+								<p class="level-item"><i class="fas fa-home"></i></p>
+						</a>
+						<a href="{{ url_for('post.new') }}" class="navbar-item{% if request.endpoint.endswith('post.new') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+									<p class="level-item"><i class="fas fa-plus-circle"></i></p>
+						</a>
+						<div class="navbar-item has-dropdown is-hoverable">
+								<a class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+										<p class="level-item"><i class="fas fa-user-circle"></i></p>
+								</a>
+								<div class="navbar-dropdown">
+										<a href="{{ url_for('user.home', username=current_user.username) }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+												<p class="level-item">Perfil</p>
+										</a>
+										<a href="{{ url_for('user.confirm') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+												<p class="level-item">Confirmar cuenta</p>
+										</a>
+										
+										<a href="{{ url_for('user.superadmin') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+												<p class="level-item">Super administrador</p>
+										</a>
+
+										<a href="{{ url_for('user.logout') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+												<p class="level-item">Cerrar sesión</p>
+										</a>
+								</div>
+								
+						<div>
+					</div>
+			</nav>
+	</div>
+</div>
+
+<div class="contenedora" style="font-size: 15px; text-align: center;width:800px; align-items: center;margin-left: 200px;font-size: 20px;">
+	<h3 ><i  style="color: black;font-size: 30px; margin-left: 150px;">  Usuarios y Administradores </i></h3>
+	<br>
+
+	<table  class="table table-bordered" style="width: 100%;" >
+		<thead>
+			<tr>
+				<th style="text-align:center">Perfil</th>
+				<th style="text-align:center">Rol</th>
+				<th style="text-align:center">Nombre</th>
+				<th style="text-align:center">Usuario</th>
+				<th style="text-align:center">Correo electronico</th>
+				<th style="text-align:center">Eliminar</th>
+				<th style="text-align:center">Editar</th>
+				
+				<th style="text-align:center">Permisos</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			{% for data in res %}
+			{% if data.rol != 'superadmin' %}
+			<tr>
+				<td style="width: 70px;"><img src="{{ url_for('user.static', filename='images/'+data.avatar) }}" alt="" style="border-radius: 100%;"></td>
+				<td>{{data.rol}}</td>
+				<td>{{data.name}}</td>
+				<td style="text-align:center">{{data.username}}</td>
+				<td>{{data.email}}</td>
+				<td style="text-align:center"><a href="{{url_for('user.delete_users',id=data['id'])}}" class="btn btn-danger"><i class="fas fa-trash-alt" ></i></a></td>
+				<td style="text-align:center"><a href="{{url_for('user.edit_info_change',id=data['id'])}}" class="btn btn-danger"><i class="fas fa-user-edit"></i></a></td>	
+                {% if data.rol == 'usuario'  %}
+				<td style="text-align:center"><a href="{{url_for('user.rol_info_change',id=data['id'])}}" class="btn btn-danger"><i class="fas fa-user-secret"></i></a></td>
+				{% else %}
+				<td style="text-align:center"><a href="{{url_for('user.rol_info_change',id=data['id'])}}" class="btn btn-danger"><i class="fas fa-user"></i></a></td>
+                {% endif %}
+            </tr>
+			{% endif %}		
+			{% endfor %}
+		</tbody>
+	</table>	
+</div>
+
+
+
+			
+					
+		    
+{% endblock  %}

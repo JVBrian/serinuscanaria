@@ -34,13 +34,24 @@
                                     <a class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                             <p class="level-item"><i class="fas fa-user-circle"></i></p>
                                     </a>
-                                    <div class="navbar-dropdown">
+                                    <div class="navbar-dropdown" >
                                             <a href="{{ url_for('user.home', username=current_user.username) }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                                     <p class="level-item">Perfil</p>
                                             </a>
                                             <a href="{{ url_for('user.confirm') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
-                                                    <p class="level-item">Confirmar</p>
+                                                    <p class="level-item">Confirmar cuenta</p>
                                             </a>
+                                            {% if current_user.rol == 'admin'  %}
+                                            <a href="{{ url_for('user.admin') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+                                                    <p class="level-item">Administrador</p>
+                                            </a>
+                                            {% endif %}
+                                            {% if current_user.rol == 'superadmin' %}
+                                            <a href="{{ url_for('user.superadmin') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+                                                    <p class="level-item">Super administrador</p>
+                                            </a>
+                                            {% endif %}
+
                                             <a href="{{ url_for('user.logout') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                                     <p class="level-item">Cerrar sesión</p>
                                             </a>

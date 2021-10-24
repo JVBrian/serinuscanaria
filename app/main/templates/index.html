@@ -27,11 +27,20 @@
                                 </div>
                         </div>
                 </div>
+
+
+
         </div>
+        
 </div>
+
 {% endblock main %}
+
+
 {% block script %}
 {{ super() }}
+
+
         <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
         <script src="{{ url_for('main.static', filename='js/swiper.js') }}"></script>
         <script src="{{ url_for('main.static', filename='js/script.js') }}"></script>
