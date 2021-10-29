@@ -24,7 +24,7 @@
 					</div>
 
 					<!-- Right side -->
-					<div class="navbar-item has-dropdown is-hoverable">
+					<div class="navbar-item has-dropdown is-hoverable"></div>
 							
 
 					   
@@ -42,9 +42,11 @@
 										<a href="{{ url_for('user.home', username=current_user.username) }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
 												<p class="level-item">Perfil</p>
 										</a>
-										<a href="{{ url_for('user.confirm') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
-												<p class="level-item">Confirmar cuenta</p>
+										{% if current_user.rol == 'admin'  %}
+										<a href="{{ url_for('user.admin') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
+												<p class="level-item">Administrador</p>
 										</a>
+										{% endif %}
 										
 										<a href="{{ url_for('user.superadmin') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
 												<p class="level-item">Super administrador</p>
@@ -61,8 +63,8 @@
 	</div>
 </div>
 
-<div class="contenedora" style="font-size: 15px; text-align: center;width:800px; align-items: center;margin-left: 200px;font-size: 20px;">
-	<h3 ><i  style="color: black;font-size: 30px; margin-left: 150px;">  Usuarios y Administradores </i></h3>
+<div class="contenedora" style="text-align: center;width:100%; align-items: center;font-size: 20px;">
+	<h1 class="title">Usuarios y administradores</h1>
 	<br>
 
 	<table  class="table table-bordered" style="width: 100%;" >

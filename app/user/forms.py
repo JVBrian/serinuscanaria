@@ -50,7 +50,7 @@ class PasswordResetForm(FlaskForm):
         submit = SubmitField('Cambiar contraseña')
 
 class SettingForm(FlaskForm):
-        avatar = FileField('Avatar', validators=[FileAllowed(['jpg','png'])])
+        avatar = FileField('Avatar', validators=[FileAllowed(['jpg','png','jpeg','gif'])])
         name = StringField('name')
         username = StringField('username')
         email = EmailField('E-mail', validators=[Email()])
@@ -70,7 +70,7 @@ class SettingForm(FlaskForm):
                     raise ValidationError('Este usuario ya está en uso')
 
 class PruebaForm(FlaskForm):
-    avatar = FileField('Avatar', validators=[FileAllowed(['jpg','png'])])
+    avatar = FileField('Avatar', validators=[FileAllowed(['jpg','png','jpeg','gif'])])
     name = StringField('name')
     username = StringField('username')
     email = EmailField('E-mail', validators=[Email()])

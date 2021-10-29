@@ -15,6 +15,7 @@ Este es un proyecto realizado en mintic, escrito en el framework **Flask** en **
 | Walter Olmos | 
 | Carlos Escorcia |
 | Brian Jaraba |
+| Jean Carlos Sequea |
 
 Configure aquí su servidor de mensajeria
 |  |  | 

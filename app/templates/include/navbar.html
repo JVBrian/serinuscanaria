@@ -20,7 +20,7 @@
                         </div>
 
                         <!-- Right side -->
-                        <div class="navbar-item has-dropdown is-hoverable">
+                        <div class="navbar-item has-dropdown is-hoverable"></div>
                                 
 
                            
@@ -38,9 +38,11 @@
                                             <a href="{{ url_for('user.home', username=current_user.username) }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                                     <p class="level-item">Perfil</p>
                                             </a>
+                                            {% if current_user.is_confirmed == 0%}
                                             <a href="{{ url_for('user.confirm') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                                     <p class="level-item">Confirmar cuenta</p>
                                             </a>
+                                            {% endif %}
                                             {% if current_user.rol == 'admin'  %}
                                             <a href="{{ url_for('user.admin') }}" class="navbar-item{% if request.endpoint.endswith('user.home') %} has-text-link-dark{% else %} has-text-grey-darker{% endif %}">
                                                     <p class="level-item">Administrador</p>

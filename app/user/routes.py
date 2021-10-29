@@ -231,7 +231,10 @@ def edit_info_change(id):
         
         flash(f'Tus datos han sido cambiados', 'success')
         db.session.commit()
-        return redirect(url_for('user.admin', username=info.username))
+        if current_user.rol == "admin":
+            return redirect(url_for('user.admin', username=info.username))
+        else:
+            return redirect(url_for('user.superadmin', username=info.username))
     
     form.username.data = info.username
     form.name.data = info.name
